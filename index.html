@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Message Kept in Silence</title>
+    <style>
+        @import url('https://googleapis.com');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #130f12;
+            background-image: radial-gradient(circle at top center, #221a20 0%, #110d10 70%);
+            color: #e6dcd8;
+            font-family: 'Cormorant Garamond', 'Amiri', serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            transition: opacity 0.6s ease;
+        }
+
+        .top-label {
+            font-family: 'Cinzel', sans-serif;
+            font-size: 11px;
+            letter-spacing: 3.5px;
+            color: #9e918c;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .divider {
+            width: 45px;
+            height: 1px;
+            background-color: #4a3f44;
+            margin: 0 auto 28px auto;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 400;
+            line-height: 1.25;
+            color: #f3eae6;
+            margin-bottom: 14px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #9e918c;
+            margin-bottom: 35px;
+            letter-spacing: 0.5px;
+        }
+
+        .star-icon {
+            font-size: 20px;
+            color: #bfa99f;
+            margin-bottom: 22px;
+            display: block;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 16px;
+            background-color: #1b1619;
+            border: 1px solid #382f34;
+            border-radius: 6px;
+            color: #f3eae6;
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 6px;
+            outline: none;
+            margin-bottom: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="password"]:focus {
+            border-color: #d6c1b7;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background-color: #d8c2b8;
+            border: none;
+            border-radius: 6px;
+            color: #1a1417;
+            font-family: 'Cinzel', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #e5d2c9;
+        }
+
+        button:active {
+            transform: scale(0.99);
+        }
+
+        .error-msg {
+            color: #d97777;
+            font-size: 14px;
+            margin-top: 12px;
+            min-height: 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .footer-date {
+            margin-top: 45px;
+            font-size: 12px;
+            letter-spacing: 4px;
+            color: #6e6267;
+        }
+
+        .message-box {
+            display: none;
+            animation: fadeIn 1.2s ease forwards;
+            padding: 20px 10px;
+        }
+
+        .msg-header {
+            font-family: 'Cinzel', sans-serif;
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: #bfa99f;
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+
+        .msg-en {
+            font-size: 22px;
+            font-style: italic;
+            line-height: 1.6;
+            color: #f3eae6;
+            margin-bottom: 25px;
+            direction: ltr;
+        }
+
+        .msg-ar {
+            font-family: 'Amiri', serif;
+            font-size: 21px;
+            line-height: 1.8;
+            color: #d8c2b8;
+            direction: rtl;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="lockScreen">
+        <div class="top-label">A MESSAGE KEPT IN SILENCE</div>
+        <div class="divider"></div>
+        <h1>Some words were never spoken.</h1>
+        <p class="subtitle">If you have the key, enter it below.</p>
+        
+        <span class="star-icon">✧</span>
+        
+        <input type="password" id="passInput" placeholder="••••••••" onkeypress="handleEnter(event)">
+        <button onclick="unlock()">UNLOCK MESSAGE</button>
+        <div class="error-msg" id="errorMsg">Incorrect key. Try again.</div>
+        
+        <div class="footer-date">11 · 11 · 11:11</div>
+    </div>
+
+    <div class="container message-box" id="messageScreen">
+        <span class="star-icon">✧</span>
+        <div class="msg-header">11/11<br>11:11 PM</div>
+        <div class="divider"></div>
+        <p class="msg-en">
+            "I loved you more in my imagination than I could ever have loved you in reality."
+        </p>
+        <p class="msg-ar">
+            ممكن الشخص المثالي الي حبيته وعشقته ماكان موجود اساساً .
+        </p>
+        <div class="footer-date">11 · 11 · 11:11</div>
+    </div>
+
+    <script>
+        const SECRET_KEY = "20062004";
+
+        function unlock() {
+            const input = document.getElementById("passInput").value;
+            const error = document.getElementById("errorMsg");
+
+            if (input === SECRET_KEY) {
+                document.getElementById("lockScreen").style.display = "none";
+                document.getElementById("messageScreen").style.display = "block";
+            } else {
+                error.style.opacity = "1";
+                setTimeout(() => { error.style.opacity = "0"; }, 2500);
+            }
+        }
+
+        function handleEnter(e) {
+            if (e.key === "Enter") {
+                unlock();
+            }
+        }
+    </script>
+
+</body>
+</html>
